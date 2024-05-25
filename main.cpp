@@ -37,8 +37,9 @@ int main(void) {
     SetSoundVolume(select_sound_effect, 0.5f);
     SetSoundPan(select_sound_effect, 1.0f);
 
+    // wait for the sound to be ready
     while(!IsSoundReady(select_sound_effect)) {
-
+        continue;
     }
 
     while(!WindowShouldClose()) {
@@ -53,6 +54,10 @@ int main(void) {
             DrawText(TextFormat("id: %02d idx: %02d", (int) selected_card.x, (int) selected_card.y), 10, 10, 20, WHITE);
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && selected_card.x != -10 && selected_card.y != -10) {
                 Card c = LoadCard((int) selected_card.x);
+                c.transform.x += (rand() % 10) - 5;
+                c.transform.y += (rand() % 10) - 5;
+                c.transform.z += (rand() % 10) - 5;
+
                 play.push_back(c);
                 PlaySound(select_sound_effect);
             }

@@ -81,6 +81,9 @@ void DrawPlayPile(Deck play) {
     Vector2 source = { (WIDTH - (TEXWIDTH * CARDSCALE)) / 2, 400 };
     if(play.size() > 0) {
         Card c = play[play.size() - 1];
-        DrawTextureEx(c.tex, source, 0.0f, CARDSCALE, WHITE);
+        source.x += c.transform.x;
+        source.y += c.transform.y;
+
+        DrawTextureEx(c.tex, source, c.transform.z, CARDSCALE, WHITE);
     }
 }
