@@ -7,5 +7,5 @@ bugbuild:
 run: build
 	./bin/uno
 
-bugrun: debug
+bugrun: bugbuild
 	./bin/uno-debug

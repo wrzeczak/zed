@@ -35,17 +35,16 @@ enum {
 };
 
 typedef struct {
-    Vector2 transform;
     int id; // summation of enum values, ie. either -2, -1, 0, or card value (ONE) + offset value (RED_OFFSET)
     int position; // position in the hand, 1 if in a hand, 0 if in the draw pile, -1 if in the play pile (initialized as NULL)
     Texture2D tex; // the texture of the card, always 410x585 (initialized as 0)
+    Vector3 transform; // x, y, and theta for random offsetting in a pile
 } Card;
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Card LoadCard(int id, int position = (int) NULL, Vector2 transform = (Vector2) { -1, -1 }) {
+Card LoadCard(int id, int position = (int) NULL) {
     Card output = (Card) {
-        transform,
         id,
         position,
         0
@@ -126,20 +125,6 @@ Card LoadCard(int id, int position = (int) NULL, Vector2 transform = (Vector2) {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 typedef std::vector<Card> Deck;
-
-Deck LoadCards(std::vector<int> ids) {
-    Vector2 initial_position = (Vector2) { 100, 100 };
-    
-    Deck output;
-
-    for(int i = 0; i < (int) ids.size(); i++) {
-        output.push_back(LoadCard(ids[i], 1, initial_position));
-        initial_position.x += 30;
-        initial_position.y += 30;  
-    }
-
-    return output;
-}
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

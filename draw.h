@@ -34,8 +34,8 @@ void DrawTitle() {
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void DrawHand(Deck d) {
-    int count = (int) d.size();
+Vector2 DrawHandAndCheckCollisions(Deck d) {
+    int count = d.size();
 
     int deck_width = count * TEXWIDTH * CARDSCALE * 0.5f;
 
@@ -44,16 +44,43 @@ void DrawHand(Deck d) {
     int offset = (WIDTH - tragedy_scaler * deck_width) / 2;
     int rotation_offset = -(count / 2);
 
+    int output_id = -10;
+    int output_index = -10;
+
     if(count % 2 != 0) {
         for(int i = 0; i < count; i++) {
             DrawTextureEx(d[i].tex, (Vector2) { offset + (i * TEXWIDTH * CARDSCALE * 0.5f * tragedy_scaler ), HEIGHT - 1.25f * (TEXHEIGHT * CARDSCALE * tragedy_scaler)}, .5f * ( rotation_offset + i ), CARDSCALE * tragedy_scaler, WHITE);
+            if(CheckCollisionPointRec(GetMousePosition(), (Rectangle) { offset + (i * TEXWIDTH * CARDSCALE * 0.5f * tragedy_scaler ), HEIGHT - 1.25f * (TEXHEIGHT * CARDSCALE * tragedy_scaler), TEXWIDTH * CARDSCALE * tragedy_scaler, TEXHEIGHT * CARDSCALE * tragedy_scaler})) { 
+                output_id = d[i].id;
+                output_index = i;
+            }
         }
     } else {
         for(int i = 0; i < count / 2; i++) {
             DrawTextureEx(d[i].tex, (Vector2) { offset + (i * TEXWIDTH * CARDSCALE * 0.5f * tragedy_scaler ), HEIGHT - 1.25f * (TEXHEIGHT * CARDSCALE * tragedy_scaler)}, .5f * ( rotation_offset + i ), CARDSCALE * tragedy_scaler, WHITE);
-        }
+            if(CheckCollisionPointRec(GetMousePosition(), (Rectangle) { offset + (i * TEXWIDTH * CARDSCALE * 0.5f * tragedy_scaler ), HEIGHT - 1.25f * (TEXHEIGHT * CARDSCALE * tragedy_scaler), TEXWIDTH * CARDSCALE * tragedy_scaler, TEXHEIGHT * CARDSCALE * tragedy_scaler})) { 
+                output_id = d[i].id;
+                output_index = i;
+            }
+        }        
         for(int i = count / 2; i < count; i++) {
             DrawTextureEx(d[i].tex, (Vector2) { offset + (i * TEXWIDTH * CARDSCALE * 0.5f * tragedy_scaler ), HEIGHT - 1.25f * (TEXHEIGHT * CARDSCALE * tragedy_scaler)}, .5f * ( rotation_offset + i + 1 ), CARDSCALE * tragedy_scaler, WHITE);
+            if(CheckCollisionPointRec(GetMousePosition(), (Rectangle) { offset + (i * TEXWIDTH * CARDSCALE * 0.5f * tragedy_scaler ), HEIGHT - 1.25f * (TEXHEIGHT * CARDSCALE * tragedy_scaler), TEXWIDTH * CARDSCALE * tragedy_scaler, TEXHEIGHT * CARDSCALE * tragedy_scaler})) { 
+                output_id = d[i].id;
+                output_index = i;
+            }
         }
+    }
+
+    return (Vector2) { (float) output_id, (float) output_index};
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+void DrawPlayPile(Deck play) {
+    Vector2 source = { (WIDTH - (TEXWIDTH * CARDSCALE)) / 2, 400 };
+    if(play.size() > 0) {
+        Card c = play[play.size() - 1];
+        DrawTextureEx(c.tex, source, 0.0f, CARDSCALE, WHITE);
     }
 }
