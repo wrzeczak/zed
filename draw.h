@@ -38,13 +38,22 @@ void DrawHand(Deck d) {
     int count = (int) d.size();
 
     int deck_width = count * TEXWIDTH * CARDSCALE * 0.5f;
-    int offset = (WIDTH - deck_width) / 2;
 
+    float tragedy_scaler = (deck_width < (WIDTH * 0.9f)) ? 1.0f : 0.75f;
+
+    int offset = (WIDTH - tragedy_scaler * deck_width) / 2;
     int rotation_offset = -(count / 2);
 
     if(count % 2 != 0) {
         for(int i = 0; i < count; i++) {
-            DrawTextureEx(d[i].tex, (Vector2) { offset + (i * TEXWIDTH * CARDSCALE * 0.5f ), HEIGHT - (TEXHEIGHT * CARDSCALE) - 5 * (10 - (int) abs(rotation_offset))}, .5f * ( rotation_offset + i ), CARDSCALE, WHITE);
+            DrawTextureEx(d[i].tex, (Vector2) { offset + (i * TEXWIDTH * CARDSCALE * 0.5f * tragedy_scaler ), HEIGHT - 1.25f * (TEXHEIGHT * CARDSCALE * tragedy_scaler)}, .5f * ( rotation_offset + i ), CARDSCALE * tragedy_scaler, WHITE);
+        }
+    } else {
+        for(int i = 0; i < count / 2; i++) {
+            DrawTextureEx(d[i].tex, (Vector2) { offset + (i * TEXWIDTH * CARDSCALE * 0.5f * tragedy_scaler ), HEIGHT - 1.25f * (TEXHEIGHT * CARDSCALE * tragedy_scaler)}, .5f * ( rotation_offset + i ), CARDSCALE * tragedy_scaler, WHITE);
+        }
+        for(int i = count / 2; i < count; i++) {
+            DrawTextureEx(d[i].tex, (Vector2) { offset + (i * TEXWIDTH * CARDSCALE * 0.5f * tragedy_scaler ), HEIGHT - 1.25f * (TEXHEIGHT * CARDSCALE * tragedy_scaler)}, .5f * ( rotation_offset + i + 1 ), CARDSCALE * tragedy_scaler, WHITE);
         }
     }
 }

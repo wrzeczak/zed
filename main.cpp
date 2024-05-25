@@ -21,22 +21,25 @@ int main(void) {
 
     srand(time(NULL));
 
-    std::vector<int> ids;
-    for(int i = 0; i < 11; i++) {
-        ids.push_back(rand() % (YELLOW_OFFSET + SKIP + 2) - 2);
+    Deck deck;
+    Deck play;
+    Deck hand;
+
+    for(int i = -2; i <= 3; i++) {
+        deck.push_back(LoadCard(i));
     }
-    Deck hand = LoadCards(ids);
 
     Texture2D background_tex = LoadTexture(BACKGROUNDTEXPATH);
 
     while(!WindowShouldClose()) {
+        if(IsKeyPressed(KEY_SPACE)) deck.push_back(LoadCard(rand() % SKIP + YELLOW_OFFSET));
         BeginDrawing();
             ClearBackground(LIME);
 
             DrawBackground(background_tex);
             DrawTitle();
             
-            DrawHand(hand);
+            DrawHand(deck);
         EndDrawing();
     }
 
