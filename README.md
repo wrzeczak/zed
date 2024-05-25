@@ -19,3 +19,7 @@ On Linux using the standard Linux development tools that Windows REALLY SHOULD H
 ```
 ~/uno/> make tuxrun
 ```
+
+On Mac, or Windows using a different compilation toolchain, or ReactOS:
+
+[Click here to meet hot singles in your area!](https://www.virtualbox.org/wiki/Downloads)
