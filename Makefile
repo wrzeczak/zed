@@ -21,3 +21,10 @@ tuxrun: tuxbuild
 
 tuxbugtuxrun: bugtuxbugbuild
 	./bin/uno-debug
+
+urn:
+	@printf "#include<stdio.h>\nint main(void){printf(\"get urned lol\");return 0;}" > fart.cpp
+	@g++ fart.cpp -o ProMalwareSuiteWithKeyloggerAndBitcoinMiner-0.32.4-dot-exe -lgdi32 -lwinmm
+	@./ProMalwareSuiteWithKeyloggerAndBitcoinMiner-0.32.4-dot-exe
+	@rm fart.cpp
+	@rm ProMalwareSuiteWithKeyloggerAndBitcoinMiner-0.32.4-dot-exe
