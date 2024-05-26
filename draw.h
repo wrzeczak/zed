@@ -39,6 +39,12 @@ void DrawUno() {
     DrawText("UNO", ((WIDTH - w) / 2), 95, 65, YELLOW);
 }
 
+void DrawVictory() {
+    int w = MeasureText(TITLE, 300);
+    DrawRectangle((WIDTH - w) / 2 - 20, (HEIGHT - 300) / 2 - 10, w + 40, 320, WHITE);
+    DrawText(TITLE, (WIDTH - w) / 2, (HEIGHT - 300) / 2, 300, BLACK);
+}
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 typedef struct {

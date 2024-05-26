@@ -26,11 +26,20 @@ int main(void) {
     Deck play;
     Deck hand;
 
+    /*
     for(int i = 0; i < 7; i++) {
         hand.push_back(RandomCard());
     }
 
     play.push_back(RandomCard());
+    */
+
+    hand.push_back(LoadCard(RED_OFFSET + PLUS2));
+    hand.push_back(LoadCard(RED_OFFSET + TWO));
+    hand.push_back(LoadCard(BLUE_OFFSET + PLUS2));
+    hand.push_back(LoadCard(GREEN_OFFSET + TWO));
+
+    play.push_back(LoadCard(YELLOW_OFFSET + TWO));
 
     Texture2D background_tex = LoadTexture(BACKGROUNDTEXPATH);
 
@@ -82,6 +91,7 @@ int main(void) {
             DrawPlayPile(play);
 
             if((int) hand.size() == 1) DrawUno();
+            if((int) hand.size() == 0) DrawVictory();
 
             const char * fps_text = TextFormat("%03d FPS", GetFPS());
             DrawText(fps_text, WIDTH - 10 - MeasureText(fps_text, 20), 10, 20, LIME);

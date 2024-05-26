@@ -132,12 +132,15 @@ typedef std::vector<Card> Deck;
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 bool SameColor(Card pile, Card play) {
+    #ifdef DEBUG
+    printf("DEBUG: PILE: %02d, PLAY: %02d\n");
+    #endif
     if(pile.id > 0 && play.id > 0) {
         // both cards are normal cards
         if(pile.id > YELLOW_OFFSET && play.id > YELLOW_OFFSET) return true;
-        if(pile.id > GREEN_OFFSET && play.id > GREEN_OFFSET && pile.id < YELLOW_OFFSET && play.id < YELLOW_OFFSET) return true;
-        if(pile.id > BLUE_OFFSET && play.id > BLUE_OFFSET && pile.id < GREEN_OFFSET && play.id < GREEN_OFFSET) return true;
-        if(pile.id > RED_OFFSET && play.id > RED_OFFSET && pile.id < BLUE_OFFSET && play.id < BLUE_OFFSET) return true;
+        if(pile.id > GREEN_OFFSET && play.id > GREEN_OFFSET && pile.id <= YELLOW_OFFSET && play.id <= YELLOW_OFFSET) return true;
+        if(pile.id > BLUE_OFFSET && play.id > BLUE_OFFSET && pile.id <= GREEN_OFFSET && play.id <= GREEN_OFFSET) return true;
+        if(pile.id > RED_OFFSET && play.id > RED_OFFSET && pile.id <= BLUE_OFFSET && play.id <= BLUE_OFFSET) return true;
         return false;
     } else if(play.id <= 0) {
         return true;
@@ -148,7 +151,14 @@ bool SameColor(Card pile, Card play) {
 }
 
 bool SameValue(Card pile, Card play) {
-    if(pile.id > 0 && pile.id > 0) {
+    #ifdef DEBUG
+    printf("DEBUG: PILE: %02d, PLAY: %02d\n");
+    #endif
+    
+    if(pile.id > 0 && play.id > 0) {
+        if(RULE_PLUS2EQUALS2) {
+            if((pile.id % 12 == PLUS2 && play.id % 12 == TWO) || (pile.id % 12 == TWO && play.id % 12 == PLUS2)) return true;
+        }
         // both cards are standard cards
         return (pile.id % 12) == (play.id % 12);
     } else if(play.id <= 0){
