@@ -32,9 +32,20 @@ void DrawTitle() {
     DrawText(TITLE, (WIDTH - w) / 2, 10, 65, WHITE);
 }
 
+void DrawUno() {
+    int w = MeasureText("UNO", 65);
+    DrawRectangle((((WIDTH - w) / 2) - 30), 90, (w + 60), 70 , Fade(RED, 0.3f));
+    DrawText("UNO", (((WIDTH - w) / 2) + 2), 97, 65, RED);
+    DrawText("UNO", ((WIDTH - w) / 2), 95, 65, YELLOW);
+}
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Vector2 DrawHandAndCheckCollisions(Deck d) {
+typedef struct {
+    int id, idx;
+} select_return_t;
+
+select_return_t DrawHandAndCheckCollisions(Deck d) {
     int count = d.size();
 
     int deck_width = count * TEXWIDTH * CARDSCALE * 0.5f;
@@ -72,7 +83,7 @@ Vector2 DrawHandAndCheckCollisions(Deck d) {
         }
     }
 
-    return (Vector2) { (float) output_id, (float) output_index};
+    return (select_return_t) { output_id, output_index};
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -80,10 +91,10 @@ Vector2 DrawHandAndCheckCollisions(Deck d) {
 void DrawPlayPile(Deck play) {
     Vector2 source = { (WIDTH - (TEXWIDTH * CARDSCALE)) / 2, 400 };
     if(play.size() > 0) {
-        Card c = play[play.size() - 1];
-        source.x += c.transform.x;
-        source.y += c.transform.y;
+        for(int i = 0; i < (int) play.size(); i++) {
+            Card c = play[i];
 
-        DrawTextureEx(c.tex, source, c.transform.z, CARDSCALE, WHITE);
+            DrawTextureEx(c.tex, { source.x + c.transform.x, source.y + c.transform.y }, c.transform.z, CARDSCALE, WHITE);
+        }
     }
 }
