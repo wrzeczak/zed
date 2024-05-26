@@ -36,18 +36,17 @@ enum {
 
 typedef struct {
     int id; // summation of enum values, ie. either -2, -1, 0, or card value (ONE) + offset value (RED_OFFSET)
-    int position; // position in the hand, 1 if in a hand, 0 if in the draw pile, -1 if in the play pile (initialized as NULL)
     Texture2D tex; // the texture of the card, always 410x585 (initialized as 0)
     Vector3 transform; // x, y, and theta for random offsetting in a pile
 } Card;
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Card LoadCard(int id, int position = (int) NULL) {
+Card LoadCard(int id) {
     Card output = (Card) {
         id,
-        position,
-        0
+        0,
+        // ?? (Vector3) { 0.0f, 0.0f, 0.0f }
     };
 
     char * path = (char *) malloc(64 * sizeof(char));
@@ -122,9 +121,42 @@ Card LoadCard(int id, int position = (int) NULL) {
     return output;
 }
 
+Card RandomCard() {
+    return LoadCard((rand() % (SKIP + YELLOW_OFFSET) + 2) - 2);
+}
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 typedef std::vector<Card> Deck;
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+bool SameColor(Card pile, Card play) {
+    if(pile.id > 0 && play.id > 0) {
+        // both cards are normal cards
+        if(pile.id > YELLOW_OFFSET && play.id > YELLOW_OFFSET) return true;
+        if(pile.id > GREEN_OFFSET && play.id > GREEN_OFFSET && pile.id < YELLOW_OFFSET && play.id < YELLOW_OFFSET) return true;
+        if(pile.id > BLUE_OFFSET && play.id > BLUE_OFFSET && pile.id < GREEN_OFFSET && play.id < GREEN_OFFSET) return true;
+        if(pile.id > RED_OFFSET && play.id > RED_OFFSET && pile.id < BLUE_OFFSET && play.id < BLUE_OFFSET) return true;
+        return false;
+    } else if(play.id <= 0) {
+        return true;
+    } else {
+        return true;
+        //! TODO: implement color switching for wilds, +4, as currently any card can be played on a special card
+    }
+}
+
+bool SameValue(Card pile, Card play) {
+    if(pile.id > 0 && pile.id > 0) {
+        // both cards are standard cards
+        return (pile.id % 12) == (play.id % 12);
+    } else if(play.id <= 0){
+        // play card is a special card
+        // any special card can be played on any other card
+        return true;
+    } else {
+        return true;
+        //! TODO: implement color switching for wilds, +4, as currently any card can be played on a special card
+    }
+}

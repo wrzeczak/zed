@@ -26,9 +26,11 @@ int main(void) {
     Deck play;
     Deck hand;
 
-    for(int i = -2; i <= 5; i++) {
-        hand.push_back(LoadCard(i));
+    for(int i = 0; i < 7; i++) {
+        hand.push_back(RandomCard());
     }
+
+    play.push_back(RandomCard());
 
     Texture2D background_tex = LoadTexture(BACKGROUNDTEXPATH);
 
@@ -44,7 +46,7 @@ int main(void) {
     }
 
     while(!WindowShouldClose()) {
-        if(IsKeyPressed(KEY_SPACE)) hand.push_back(LoadCard(rand() % (SKIP + YELLOW_OFFSET)));
+        if(IsKeyPressed(KEY_SPACE)) hand.push_back(RandomCard());
 
         BeginDrawing();
             ClearBackground(LIME);
@@ -55,11 +57,14 @@ int main(void) {
             select_return_t select = DrawHandAndCheckCollisions(hand);
             DrawText(TextFormat("id: %02d idx: %02d", (int) select.id, (int) select.idx), 10, 10, 20, WHITE);
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && select.id != -10 && select.idx != -10) {
-                 #ifdef DEBUG
+                Card t = play[play.size() - 1]; // there has got to be a C++-ussy way to do this...
+                Card c = hand[select.idx];
+                if(!(SameColor(t, c) || SameValue(t, c))) goto __card_is_not_playable_and_that_is_really_really_rather_sad;
+                #ifdef DEBUG
                 printf("DEBUG: ID: %02d IDX: %02d LEN: %02d\n", (int) select.id, (int) select.idx, (int) hand.size());
                 #endif
 
-                Card c = hand[select.idx];
+                
                 c.transform.x += (rand() % 20) - 10;
                 c.transform.y += (rand() % 50) - 25;
                 c.transform.z += (rand() % 30) - 15;
@@ -73,6 +78,7 @@ int main(void) {
 
                 hand.erase(hand.begin() + (int) select.idx);
             }
+            __card_is_not_playable_and_that_is_really_really_rather_sad:
             DrawPlayPile(play);
 
             if((int) hand.size() == 1) DrawUno();
